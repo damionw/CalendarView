@@ -213,11 +213,12 @@ Calendar.setup = function(params)
     if (!params[name]) params[name] = def
   }
 
-  param_default('dateField', null)
-  param_default('triggerElement', null)
-  param_default('parentElement', null)
-  param_default('selectHandler',  null)
-  param_default('closeHandler', null)
+  param_default('dateField', null);
+  param_default('triggerElement', null);
+  param_default('parentElement', null);
+  param_default('selectHandler',  null);
+  param_default('closeHandler', null);
+  param_default('dates', []);
 
   // In-Page Calendar
   if (params.parentElement)
@@ -290,7 +291,7 @@ Calendar.prototype = {
   isPopup: true,
 
   dateField: null,
-
+  dateList: null,
 
   //----------------------------------------------------------------------------
   // Initialize

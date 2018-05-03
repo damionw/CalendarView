@@ -7,8 +7,8 @@ div.calendar
 
 div.calendar.popup
 {
-  margin-left: -40px;
-  margin-top: -100px;
+  margin-left: 20px;
+  margin-top: 60px;
 }
 
 div.calendar table
@@ -79,4 +79,10 @@ div.calendar tr.days td.today
 div.calendar tr.days td.otherDay
 {
   color: #bbb;
+}
+
+div.calendar tr.days td.selectable
+{
+  font-weight: bold;
+  color: #0000D5;
 }
