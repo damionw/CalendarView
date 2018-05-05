@@ -218,13 +218,14 @@ Calendar.setup = function(params)
   param_default('parentElement', null);
   param_default('selectHandler',  null);
   param_default('closeHandler', null);
-  param_default('dates', []);
+  param_default('special_dates', []);
 
   // In-Page Calendar
   if (params.parentElement)
   {
     var calendar = new Calendar(params.parentElement)
     calendar.setSelectHandler(params.selectHandler || Calendar.defaultSelectHandler)
+    calendar.setSpecial(params.special_dates);
     if (params.dateFormat)
       calendar.setDateFormat(params.dateFormat)
     if (params.dateField) {
@@ -247,6 +248,7 @@ Calendar.setup = function(params)
       var calendar = new Calendar()
       calendar.setSelectHandler(params.selectHandler || Calendar.defaultSelectHandler)
       calendar.setCloseHandler(params.closeHandler || Calendar.defaultCloseHandler)
+      calendar.setSpecial(params.special_dates);
       if (params.dateFormat)
         calendar.setDateFormat(params.dateFormat)
       if (params.dateField) {
@@ -290,6 +292,7 @@ Calendar.prototype = {
   shouldClose: false,
   isPopup: true,
 
+  special_dates: [],
   dateField: null,
   dateList: null,
 
@@ -320,6 +323,7 @@ Calendar.prototype = {
     var thisDay    = today.getDate()
     var month      = date.getMonth();
     var dayOfMonth = date.getDate();
+    var special_dates = this.special_dates;
 
     // Ensure date is within the defined range
     if (date.getFullYear() < this.minYear)
@@ -344,10 +348,18 @@ Calendar.prototype = {
             var isCurrentMonth = (date.getMonth() == month)
 
             // Reset classes on the cell
-            cell.className = ''
-            cell.date = new Date(date)
-            cell.update(day)
+            cell.className = '';
+            cell.date = new Date(date);
+            cell.update(day);
 
+            if (special_dates.length == 0) {
+            }
+            else if (special_dates.find(function(_date) {return _date.getSeconds() == date.getSeconds();}) != null) {
+              cell.addClassName('special1');
+            }
+            else {
+             console.log(special_dates.find(function(_date) {return _date.getSeconds() == date.getSeconds();}));
+            }
             // Account for days of the month other than the current month
             if (!isCurrentMonth)
               cell.addClassName('otherDay')
@@ -585,8 +597,11 @@ Calendar.prototype = {
   {
     this.minYear = minYear
     this.maxYear = maxYear
-  }
+  },
 
+  setSpecial: function(special_dates) {
+      this.special_dates = special_dates;
+  }
 }
 
 // global object that remembers the calendar

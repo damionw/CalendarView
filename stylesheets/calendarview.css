@@ -81,8 +81,9 @@ div.calendar tr.days td.otherDay
   color: #bbb;
 }
 
-div.calendar tr.days td.selectable
+div.calendar tr.days td.special1
 {
-  font-weight: bold;
+/*   font-weight: bold; */
+  background-color: yellow;
   color: #0000D5;
 }
