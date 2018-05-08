@@ -84,6 +84,6 @@ div.calendar tr.days td.otherDay
 div.calendar tr.days td.special1
 {
 /*   font-weight: bold; */
-  background-color: yellow;
-  color: #0000D5;
+/*   background-color: green; */
+  color: blue;
 }

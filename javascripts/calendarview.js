@@ -91,12 +91,23 @@ Calendar.handleMouseUpEvent = function(event)
   // Clicked on a day
   if (typeof el.navAction == 'undefined')
   {
+    var canselect = (
+        (calendar.special_dates.length > 0 && el.hasClassName('special1')) ||
+        calendar.special_dates.length == 0
+    );
+
     if (calendar.currentDateElement) {
-      Element.removeClassName(calendar.currentDateElement, 'selected')
-      Element.addClassName(el, 'selected')
-      calendar.shouldClose = (calendar.currentDateElement == el)
-      if (!calendar.shouldClose) calendar.currentDateElement = el
+        Element.removeClassName(calendar.currentDateElement, 'selected')
+        calendar.shouldClose = (calendar.currentDateElement == el)
+        if (!calendar.shouldClose) calendar.currentDateElement = el
     }
+
+    if (! canselect) {
+        calendar.shouldClose = true;
+        return;
+    }
+
+    Element.addClassName(el, 'selected')
     calendar.date.setDateOnly(el.date)
     isNewDate = true
     calendar.shouldClose = !el.hasClassName('otherDay')
@@ -352,19 +363,23 @@ Calendar.prototype = {
             cell.date = new Date(date);
             cell.update(day);
 
-            if (special_dates.length == 0) {
+            var _comparison_fn = function(_dt) {
+                return (
+                    (_dt.getDate() == date.getDate()) &&
+                    (_dt.getMonth() == date.getMonth()) &&
+                    (_dt.getFullYear() == date.getFullYear())
+                );
             }
-            else if (special_dates.find(function(_date) {return _date.getSeconds() == date.getSeconds();}) != null) {
-              cell.addClassName('special1');
+
+            if (special_dates.find(_comparison_fn) != null) {
+                cell.addClassName('special1');
             }
-            else {
-             console.log(special_dates.find(function(_date) {return _date.getSeconds() == date.getSeconds();}));
-            }
+
             // Account for days of the month other than the current month
             if (!isCurrentMonth)
-              cell.addClassName('otherDay')
+              cell.addClassName('otherDay');
             else
-              rowHasDays = true
+              rowHasDays = true;
 
             // Ensure the current day is selected
             if (isCurrentMonth && day == dayOfMonth) {
