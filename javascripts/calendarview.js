@@ -234,9 +234,8 @@ Calendar.setup = function(params)
   // In-Page Calendar
   if (params.parentElement)
   {
-    var calendar = new Calendar(params.parentElement)
+    var calendar = new Calendar(params.special_dates, params.parentElement)
     calendar.setSelectHandler(params.selectHandler || Calendar.defaultSelectHandler)
-    calendar.setSpecial(params.special_dates);
     if (params.dateFormat)
       calendar.setDateFormat(params.dateFormat)
     if (params.dateField) {
@@ -256,10 +255,10 @@ Calendar.setup = function(params)
   {
     var triggerElement = $(params.triggerElement || params.dateField)
     triggerElement.onclick = function() {
-      var calendar = new Calendar()
+      var calendar = new Calendar(params.special_dates);
       calendar.setSelectHandler(params.selectHandler || Calendar.defaultSelectHandler)
       calendar.setCloseHandler(params.closeHandler || Calendar.defaultCloseHandler)
-      calendar.setSpecial(params.special_dates);
+
       if (params.dateFormat)
         calendar.setDateFormat(params.dateFormat)
       if (params.dateField) {
@@ -272,9 +271,7 @@ Calendar.setup = function(params)
       return calendar
     }
   }
-
 }
-
 
 
 //------------------------------------------------------------------------------
@@ -311,8 +308,10 @@ Calendar.prototype = {
   // Initialize
   //----------------------------------------------------------------------------
 
-  initialize: function(parent)
+  initialize: function(special_dates, parent)
   {
+    this.special_dates = special_dates;
+
     if (parent)
       this.create($(parent))
     else
@@ -371,7 +370,7 @@ Calendar.prototype = {
                 );
             }
 
-            if (special_dates.find(_comparison_fn) != null) {
+            if ((t = special_dates.find(_comparison_fn)) != null) {
                 cell.addClassName('special1');
             }
 
@@ -621,33 +620,6 @@ Calendar.prototype = {
 
 // global object that remembers the calendar
 window._popupCalendar = null
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //==============================================================================
